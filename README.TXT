@@ -10,8 +10,8 @@ are licensed under the Apache License 2.0. Please see the files called LICENSE.t
 more information.
 
 
-************************************ IODClient class ************************************************
-1. Integrate IODClient into Windows project
+************************************ IODClient Library ************************************************
+1. Integrate IODClient into Android project
 
 a) Create a new or open an existing Android project
 b) Select the app main folder and click on the File menu then choose Import Module option.
