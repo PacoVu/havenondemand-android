@@ -45,7 +45,7 @@ IODClient library requires a minimum Android API level 10.
 
 ## Demo code 1: 
 
-**Use the Entity Extraction API to extract people and places from cnn.com website with a GET request**
+**Use the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
 
     import com.iod.api.iodclient.IIODClientCallback;
     import com.iod.api.iodclient.IODApps;
@@ -79,6 +79,7 @@ IODClient library requires a minimum Android API level 10.
             iodClient.GetRequest(params, iodApp, IODClient.REQ_MODE.SYNC);
         }
         
+        // implement callback functions
         @Override
         public void requestCompletedWithContent(String response) { 
             try {
@@ -86,8 +87,8 @@ IODClient library requires a minimum Android API level 10.
                 JSONArray entitiesArray = mainObject.getJSONArray("entities");
                 int count = entitiesArray.length();
                 int i = 0;
-		String people = "";
-		String places = "";
+                String people = "";
+                String places = "";
 
                 if (count > 0) {
                     for (i = 0; i < count; i++) {
@@ -103,8 +104,8 @@ IODClient library requires a minimum Android API level 10.
                     }
                 }
             } catch (Exception ex) { 
-		// handle exception
-	    }	
+                // handle exception
+            }	
         }
         
         @Override
@@ -117,7 +118,7 @@ IODClient library requires a minimum Android API level 10.
 
 ## Demo code 2:
  
-**Use the OCR Document API to recognize text from an image with a POST request**
+**Use the OCR Document API to recognize text from an image with an asynchronous POST request**
 
     import com.iod.api.iodclient.IIODClientCallback;
     import com.iod.api.iodclient.IODApps;
@@ -147,6 +148,12 @@ IODClient library requires a minimum Android API level 10.
             iodClient.PostRequest(params, iodApp, IODClient.REQ_MODE.ASYNC);
         }
         
+        // implement delegated functions
+        
+        /************************************************************************************************
+	* An async request will result in a response with a jobID. We parse the response to get the jobID 
+        * and send a request for the actual content identified by the jobID.
+	************************************************************************************************/ 
         @Override
         public void requestCompletedWithJobID(String response) { 
             try {
