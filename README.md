@@ -15,18 +15,29 @@ IODClient library requires a minimum Android API level 10.
 5. Open the main project build.gradle and add packaging options and the dependency as follows:
     
     android {
+
         packagingOptions {
+
             exclude 'META-INF/DEPENDENCIES'
+
             exclude 'META-INF/NOTICE'
+
             exclude 'META-INF/LICENSE'
+
             exclude 'META-INF/LICENSE.txt'
+
             exclude 'META-INF/NOTICE.txt'
+
             exclude 'META-INF/ASL2.0‘
         }
     }
+
     dependencies {
+
         compile fileTree(dir: 'libs', include: ['*.jar'])
+
         compile project(':iodclient')
+
     }
 
 ----
@@ -48,16 +59,16 @@ IODClient library requires a minimum Android API level 10.
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             
-	    iodClient = new IODClient("your-apikey", this);
+            iodClient = new IODClient("your-apikey", this);
             
-	    useIODClient();
+            useIODClient();
         }
 
-	private void useIODClient() {
+        private void useIODClient() {
             String iodApp = IODApps.ENTITY_EXTRACTION;
             Map<String, Object> params = new HashMap<String, Object>();
             
-	    Map<String, String> arrays = new HashMap<String, String>();
+            Map<String, String> arrays = new HashMap<String, String>();
             arrays.put("entity_type", "people_eng,places_eng");
 
             params.put("url", "http://www.cnn.com");
@@ -67,7 +78,7 @@ IODClient library requires a minimum Android API level 10.
             iodClient.GetRequest(params, iodApp, IODClient.REQ_MODE.SYNC);
         }
         
-	@Override
+        @Override
         public void requestCompletedWithContent(String response) { 
             try {
                 JSONObject mainObject = new JSONObject(response);
@@ -95,7 +106,7 @@ IODClient library requires a minimum Android API level 10.
 	    }	
         }
         
-	@Override
+        @Override
         public void onErrorOccurred(String errorMessage) { 
             // handle error if any
         }
@@ -120,12 +131,12 @@ IODClient library requires a minimum Android API level 10.
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             
-	    iodClient = new IODClient("your-apikey", this);
+            iodClient = new IODClient("your-apikey", this);
             
-	    useIODClient();
+            useIODClient();
         }
 
-	private void useIODClient() {
+        private void useIODClient() {
             String iodApp = IODApps.OCR_DOCUMENT;
             Map<String, Object> params = new HashMap<String, Object>();
             
@@ -148,13 +159,13 @@ IODClient library requires a minimum Android API level 10.
             }
         }
 
-	@Override
+        @Override
         public void requestCompletedWithContent(String response) { 
             try {
                 JSONObject mainObject = new JSONObject(response);
                 JSONArray textBlockArray = mainObject.getJSONArray("actions");
                 int count = textBlockArray.length();
-		String recognizedText = "";
+                String recognizedText = "";
                 if (count > 0) {
                     for (int i = 0; i < count; i++) {
                         JSONObject actions = textBlockArray.getJSONObject(i);
@@ -172,11 +183,11 @@ IODClient library requires a minimum Android API level 10.
                     }
                 }
             } catch (Exception ex) { 
-		// handle exception
-	    }	
+                // handle exception
+            }	
         }
         
-	@Override
+        @Override
         public void onErrorOccurred(String errorMessage) { 
             // handle error if any
         }
