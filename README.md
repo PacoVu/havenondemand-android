@@ -17,13 +17,9 @@ IODClient library requires a minimum Android API level 10.
     android {
 
         packagingOptions {
-
             exclude 'META-INF/DEPENDENCIES'
-
             exclude 'META-INF/NOTICE'
-
             exclude 'META-INF/LICENSE'
-
             exclude 'META-INF/LICENSE.txt'
             exclude 'META-INF/NOTICE.txt'
             exclude 'META-INF/ASL2.0'
@@ -32,11 +28,8 @@ IODClient library requires a minimum Android API level 10.
     }
     
     dependencies {
-    
         compile fileTree(dir: 'libs', include: ['*.jar'])
-    
         compile project(':iodclient')
-    
     }
 
 ----
