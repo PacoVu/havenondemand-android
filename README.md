@@ -62,8 +62,8 @@ IODClient library requires a minimum Android API level 10.
 >E.g.:
 ## 
     Map<String, String> entity_array = new HashMap<String, String>();
-    entity_array.put(“entity_type”, “people_eng,places_eng”);
-    params.put(“arrays”, entity_array);
+    entity_array.put("entity_type", "people_eng,places_eng");
+    params.put("arrays", entity_array);
 
 * iodApp: a string to identify an IDOL OnDemand API. E.g. "extractentities". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
@@ -71,8 +71,8 @@ IODClient library requires a minimum Android API level 10.
 *Return: void.*
 
 **Response:**
-* If the mode is “ASYNC”, response will be returned via the requestCompletedWithJobID(String response) callback function.
-* If the mode is “SYNC”, response will be returned via the requestCompletedWithContent(String response) callback function.
+* If the mode is "ASYNC", response will be returned via the requestCompletedWithJobID(String response) callback function.
+* If the mode is "SYNC", response will be returned via the requestCompletedWithContent(String response) callback function.
 * If there is an error occurred, the error message will be sent via the onErrorOccurred(String errorMessage) callback function.
 
 ----
@@ -90,8 +90,8 @@ IODClient library requires a minimum Android API level 10.
 E.g.:
 ## 
     Map<String, String> entity_array = new HashMap<String, String>();
-    entity_array.put(“entity_type”, “people_eng,places_eng”);
-    params.put(“arrays”, entity_array);
+    entity_array.put("entity_type", "people_eng,places_eng");
+    params.put("arrays", entity_array);
 
 * iodApp: a string to identify an IDOL OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
