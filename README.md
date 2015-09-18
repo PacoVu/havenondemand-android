@@ -13,7 +13,7 @@ IODClient library requires a minimum Android API level 10.
 3. Select the app main folder and click on the File menu then choose Import Module option.
 >![](/images/importlibrary1.jpg)
 4. Browse to IODClient folder and click OK. The IODClient folder should be created into your project.
->![](/images/importlibrary2.jpg)
+![](/images/importlibrary2.jpg)
 5. Open the main project build.gradle and add packaging options and the dependency as follows:
     
     android {
@@ -48,7 +48,7 @@ IODClient library requires a minimum Android API level 10.
 * callback: class that implements the IIODClientCallback interface.
 
 ----
-**GetRequest(Map<\String,Object\> params, String iodApp, REQ_MODE mode)**
+**GetRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)**
 
 *Description:* 
 * Sends a GET request to an IDOL OnDemand API.
@@ -76,7 +76,7 @@ IODClient library requires a minimum Android API level 10.
 * If there is an error occurred, the error message will be sent via the onErrorOccurred(String errorMessage) callback function.
 
 ----
-**PostRequest(Map<String,Object> params, String iodApp, REQ_MODE mode)**
+**PostRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)**
 
 *Description:* 
 * Sends a POST request to an IDOL OnDemand API.
@@ -86,7 +86,7 @@ IODClient library requires a minimum Android API level 10.
 
 >Note: 
 
->In the case of a parameter type is an array<>, the key must be defined as “arrays” and the value must be a Map<String,String> object with the key is the parameter name and the values separated by commas “,”. E.g.:
+>In the case of a parameter type is an array<>, the key must be defined as “arrays” and the value must be a Map\<String,String\> object with the key is the parameter name and the values separated by commas “,”. E.g.:
 ## 
     Map<String, String> entity_array = new HashMap<String, String>();
     entity_array.put(“entity_type”, “people_eng,places_eng”);
@@ -118,16 +118,16 @@ IODClient library requires a minimum Android API level 10.
 ## API callback functions
 You will need to implement callback functions to receive responses from the server
 
-    public class MyActivity extends Activity implements IIODClientCallback {
+    public class MyClass implements IIODClientCallback {
     
-    @Override
-    public void requestCompletedWithJobID(String response) {}
+        @Override
+        public void requestCompletedWithJobID(String response) {}
     
-    @Override
-    public void requestCompletedWithContent(String response) {}
+        @Override
+        public void requestCompletedWithContent(String response) {}
     
-    @Override
-    public void onErrorOccurred(string errorMessage){}
+        @Override
+        public void onErrorOccurred(string errorMessage){}
     
     }
 # 
@@ -149,7 +149,7 @@ If there is an error occurred, the error message will be returned to this callba
 ----
 ## Demo code 1: 
 
-**Use the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
+**Call the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
 
     import com.iod.api.iodclient.IIODClientCallback;
     import com.iod.api.iodclient.IODApps;
@@ -222,7 +222,7 @@ If there is an error occurred, the error message will be returned to this callba
 
 ## Demo code 2:
  
-**Use the OCR Document API to recognize text from an image with an asynchronous POST request**
+**Call the OCR Document API to recognize text from an image with an asynchronous POST request**
 
     import com.iod.api.iodclient.IIODClientCallback;
     import com.iod.api.iodclient.IODApps;
