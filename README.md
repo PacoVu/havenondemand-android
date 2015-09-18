@@ -25,10 +25,8 @@ IODClient library requires a minimum Android API level 10.
             exclude 'META-INF/LICENSE'
 
             exclude 'META-INF/LICENSE.txt'
-
             exclude 'META-INF/NOTICE.txt'
-
-            exclude 'META-INF/ASL2.0‘
+            exclude 'META-INF/ASL2.0'
         }
     
     }
@@ -150,10 +148,10 @@ IODClient library requires a minimum Android API level 10.
         
         // implement delegated functions
         
-        /************************************************************************************************
-	* An async request will result in a response with a jobID. We parse the response to get the jobID 
-        * and send a request for the actual content identified by the jobID.
-	************************************************************************************************/ 
+        /**************************************************************************************
+        * An async request will result in a response with a jobID. We parse the response to get
+        * the jobID and send a request for the actual content identified by the jobID.
+        **************************************************************************************/ 
         @Override
         public void requestCompletedWithJobID(String response) { 
             try {
