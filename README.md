@@ -38,7 +38,9 @@ IODClient library requires a minimum Android API level 10.
 
 ----
 ## API References
-**IODClient(String apiKey, IIODClientCallback callback)**
+**Constructor**
+
+    IODClient(String apiKey, IIODClientCallback callback)
 
 *Description:* 
 * Constructor. Creates and initializes an IODClient object.
@@ -47,8 +49,31 @@ IODClient library requires a minimum Android API level 10.
 * apiKey: your developer apikey.
 * callback: class that implements the IIODClientCallback interface.
 
+*Example code:*
+
+    
+    import com.iod.api.iodclient.IODClient;
+    import com.iod.api.iodclient.IIODClientCallback;
+
+    public class MyActivity extends Activity implements IIODClientCallback 
+    {
+        IODClient iodClient = new IODClient("your-api-key", this);
+        
+	@Override
+        public void requestCompletedWithJobID(String response){ }
+        
+	@Override
+        public void requestCompletedWithContent(String response){ }
+    	
+        @Override
+        public void onErrorOccurred(String errorMessage){ }
+    }
+
+
 ----
-**GetRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)**
+**Function GetRequest**
+
+    void GetRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)
 
 *Description:* 
 * Sends a GET request to an IDOL OnDemand API.
@@ -68,15 +93,26 @@ IODClient library requires a minimum Android API level 10.
 * iodApp: a string to identify an IDOL OnDemand API. E.g. "extractentities". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
 
-*Return: void.*
-
 **Response:**
 * If the mode is "ASYNC", response will be returned via the requestCompletedWithJobID(String response) callback function.
 * If the mode is "SYNC", response will be returned via the requestCompletedWithContent(String response) callback function.
 * If there is an error occurred, the error message will be sent via the onErrorOccurred(String errorMessage) callback function.
 
+**Example code:**
+    Call the Entity Extraction API to find people and places from CNN website
+
+    String iodApp = IODApps.ENTITY_EXTRACTION;
+    Map<String,Object> params =  new HashMap<String,Object>();
+    params.put("url", "http://www.cnn.com");
+    Map<String, String> entity_array = new HashMap<String, String>();
+    entity_array.put("entity_type", "people_eng,places_eng");
+    params.put("arrays", entity_array);
+    iodClient.GetRequest(params, iodApp, IODClient.REQ_MODE.SYNC);
+
 ----
-**PostRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)**
+**Function PostRequest**
+
+    void PostRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)
 
 *Description:* 
 * Sends a POST request to an IDOL OnDemand API.
@@ -96,15 +132,24 @@ E.g.:
 * iodApp: a string to identify an IDOL OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
 
-*Return: void.*
-
 **Response:**
 * If the mode is "ASYNC", response will be returned via the requestCompletedWithJobID(String response) callback function.
 * If the mode is "SYNC", response will be returned via the requestCompletedWithContent(String response) callback function.
 * If there is an error occurred, the error message will be sent via the onErrorOccurred(String errorMessage) callback function.
 
+**Example code:**
+    Call the OCR Document API to scan text from an image file
+
+    String iodApp = IODApps.OCR_DOCUMENT;
+    Map<String,Object> params =  new HashMap<String,Object>();
+    params.put("file", "full/path/filename.jpg");
+    params.put("mode", "document_photo");
+    iodClient.PostRequest(params, iodApp, IODClient.REQ_MODE.ASYNC);
+
 ----
-**GetJobResult(String jobID)**
+**Function GetJobResult**
+
+    void GetJobResult(String jobID)
 
 *Description:*
 * Sends a request to IDOL OnDemand to retrieve the content identified by the jobID.
@@ -114,6 +159,21 @@ E.g.:
 
 **Response:** 
 * Response will be returned via the requestCompletedWithContent(String response)
+
+**Example code:**
+    Parse a JSON string contained a jobID and call the function to get the actual content from IDOL OnDemand server
+
+    @Override
+    public void requestCompletedWithJobID(String response) 
+    { 
+        try {
+            JSONObject mainObject = new JSONObject(response);
+            if (!mainObject.isNull("jobID")) {
+                jobID = mainObject.getString("jobID");
+                iodClient.GetJobResult(jobID);
+            }
+        } catch (Exception ex) { }
+    }
 
 ----
 ## API callback functions
@@ -135,17 +195,26 @@ In your class, you will need to inherit the IIODClientCallback interface and imp
 When you call the GetRequest() or PostRequest() with the ASYNC mode, the response will be returned to this callback function. The response is a JSON string containing the jobID.
 
     @Override
-    public void requestCompletedWithJobID(String response) {}
+    public void requestCompletedWithJobID(String response) 
+    {
+    
+    }
 # 
 When you call the GetRequest() or PostRequest() with the SYNC mode, the response will be returned to this callback function. The response is a JSON string containing the actual result of the service.
 
     @Override
-    public void requestCompletedWithContent(String response) {}
+    public void requestCompletedWithContent(String response) 
+    {
+    
+    }
 # 
 If there is an error occurred, the error message will be returned to this callback function.
 
     @Override
-    public void onErrorOccurred(string errorMessage){}
+    public void onErrorOccurred(string errorMessage)
+    {
+    
+    }
 
 ----
 ## Demo code 1: 
