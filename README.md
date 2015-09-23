@@ -73,7 +73,7 @@ IODClient library requires a minimum Android API level 10.
 ----
 **Function GetRequest**
 
-    void GetRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)
+    void GetRequest(Map<String,Object> params, String iodApp, REQ_MODE mode)
 
 *Description:* 
 * Sends a GET request to an IDOL OnDemand API.
@@ -112,7 +112,7 @@ IODClient library requires a minimum Android API level 10.
 ----
 **Function PostRequest**
 
-    void PostRequest(Map\<String,Object\> params, String iodApp, REQ_MODE mode)
+    void PostRequest(Map<String,Object> params, String iodApp, REQ_MODE mode)
 
 *Description:* 
 * Sends a POST request to an IDOL OnDemand API.
