@@ -122,7 +122,7 @@ IODClient library requires a minimum Android API level 10.
 
 >Note: 
 
->In the case of a parameter type is an array<>, the key must be defined as "arrays" and the value must be a Map\<String,String\> object with the key is the parameter name and the values separated by commas “,”.
+>In the case of a parameter type is an array<>, the key must be defined as "arrays" and the value must be a Map\<String,String\> object with the key is the parameter name and the values separated by commas ",".
 E.g.:
 ## 
     Map<String, String> entity_array = new HashMap<String, String>();
