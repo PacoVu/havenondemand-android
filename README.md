@@ -1,18 +1,18 @@
-# IODClient Library for Android. V1.0
+# HODClient Library for Android. V1.0
 
 ----
 ## Overview
-IODClient library for Android is a lightweight Java based API, which helps you easily integrate your Android app with HP IDOL OnDemand Services.
+HODClient library for Android is a lightweight Java based API, which helps you easily integrate your Android app with HP Haven OnDemand Services.
 
-IODClient library requires a minimum Android API level 10.
+HODClient library requires a minimum Android API level 10.
 
 ----
-## Integrate IODClient into an Android project
-1. Download the IODClient library project for Android. 
+## Integrate HODClient into an Android project
+1. Download the HODClient library project for Android. 
 2. Create a new or open an existing Android project
 3. Select the app main folder and click on the File menu then choose Import Module option.
 >![](/images/importlibrary1.jpg)
-4. Browse to IODClient folder and click OK. The IODClient folder should be created into your project.
+4. Browse to HODClient folder and click OK. The HODClient folder should be created into your project.
 ![](/images/importlibrary2.jpg)
 5. Open the main project build.gradle and add packaging options and the dependency as follows:
     
@@ -32,7 +32,7 @@ IODClient library requires a minimum Android API level 10.
     dependencies {
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
-        compile project(':iodclient')
+        compile project(':hodclient')
     
     }
 
@@ -40,24 +40,26 @@ IODClient library requires a minimum Android API level 10.
 ## API References
 **Constructor**
 
-    IODClient(String apiKey, IIODClientCallback callback)
+    HODClient(String apiKey, IHODClientCallback callback)
 
 *Description:* 
-* Constructor. Creates and initializes an IODClient object.
+
+* Constructor. Creates and initializes an HODClient object.
 
 *Parameters:*
+
 * apiKey: your developer apikey.
-* callback: class that implements the IIODClientCallback interface.
+* callback: class that implements the IHODClientCallback interface.
 
 *Example code:*
-
+## 
     
-    import com.iod.api.iodclient.IODClient;
-    import com.iod.api.iodclient.IIODClientCallback;
+    import com.hod.api.hodclient.HODClient;
+    import com.hod.api.hodclient.IHODClientCallback;
 
-    public class MyActivity extends Activity implements IIODClientCallback 
+    public class MyActivity extends Activity implements IHODClientCallback 
     {
-        IODClient iodClient = new IODClient("your-api-key", this);
+        HODClient hodClient = new HODClient("your-api-key", this);
         
 	@Override
         public void requestCompletedWithJobID(String response){ }
@@ -73,13 +75,15 @@ IODClient library requires a minimum Android API level 10.
 ----
 **Function GetRequest**
 
-    void GetRequest(Map<String,Object> params, String iodApp, REQ_MODE mode)
+    void GetRequest(Map<String,Object> params, String hodApp, REQ_MODE mode)
 
-*Description:* 
-* Sends a GET request to an IDOL OnDemand API.
+*Description:*
+ 
+* Sends a HTTP GET request to call a Haven OnDemand API.
 
 *Parameters:*
-* params: a HashMap object containing key/value pair parameters to be sent to an IDOL OnDemand API, where the keys are the parameters of an IDOL OnDemand API.
+
+* params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API.
 
 >Note: 
 
@@ -90,35 +94,39 @@ IODClient library requires a minimum Android API level 10.
     entity_array.put("entity_type", "people_eng,places_eng");
     params.put("arrays", entity_array);
 
-* iodApp: a string to identify an IDOL OnDemand API. E.g. "extractentities". Current supported apps are listed in the IODApps class.
+* hodApp: a string to identify a Haven OnDemand API. E.g. "extractentities". Current supported apps are listed in the HODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
 
-**Response:**
+*Response:*
+
 * If the mode is "ASYNC", response will be returned via the requestCompletedWithJobID(String response) callback function.
 * If the mode is "SYNC", response will be returned via the requestCompletedWithContent(String response) callback function.
 * If there is an error occurred, the error message will be sent via the onErrorOccurred(String errorMessage) callback function.
 
-**Example code:**
-    Call the Entity Extraction API to find people and places from CNN website
+*Example code:*
+## 
+    // Call the Entity Extraction API to find people and places from CNN website
 
-    String iodApp = IODApps.ENTITY_EXTRACTION;
+    String hodApp = HODApps.ENTITY_EXTRACTION;
     Map<String,Object> params =  new HashMap<String,Object>();
     params.put("url", "http://www.cnn.com");
     Map<String, String> entity_array = new HashMap<String, String>();
     entity_array.put("entity_type", "people_eng,places_eng");
     params.put("arrays", entity_array);
-    iodClient.GetRequest(params, iodApp, IODClient.REQ_MODE.SYNC);
+    hodClient.GetRequest(params, hodApp, HODClient.REQ_MODE.SYNC);
 
 ----
 **Function PostRequest**
 
-    void PostRequest(Map<String,Object> params, String iodApp, REQ_MODE mode)
+    void PostRequest(Map<String,Object> params, String hodApp, REQ_MODE mode)
 
 *Description:* 
-* Sends a POST request to an IDOL OnDemand API.
+
+* Sends a HTTP POST request to call a Haven OnDemand API.
 
 *Parameters:*
-* params: a HashMap object containing key/value pair parameters to be sent to an IDOL OnDemand API, where the keys are the parameters of an IDOL OnDemand API. 
+
+* params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API. 
 
 >Note: 
 
@@ -129,22 +137,24 @@ E.g.:
     entity_array.put("entity_type", "people_eng,places_eng");
     params.put("arrays", entity_array);
 
-* iodApp: a string to identify an IDOL OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
+* hodApp: a string to identify a Haven OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
 
-**Response:**
+*Response:*
+
 * If the mode is "ASYNC", response will be returned via the requestCompletedWithJobID(String response) callback function.
 * If the mode is "SYNC", response will be returned via the requestCompletedWithContent(String response) callback function.
 * If there is an error occurred, the error message will be sent via the onErrorOccurred(String errorMessage) callback function.
 
-**Example code:**
-    Call the OCR Document API to scan text from an image file
+*Example code:*
+## 
+    // Call the OCR Document API to scan text from an image file
 
-    String iodApp = IODApps.OCR_DOCUMENT;
+    String hodApp = HODApps.OCR_DOCUMENT;
     Map<String,Object> params =  new HashMap<String,Object>();
     params.put("file", "full/path/filename.jpg");
     params.put("mode", "document_photo");
-    iodClient.PostRequest(params, iodApp, IODClient.REQ_MODE.ASYNC);
+    hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
 
 ----
 **Function GetJobResult**
@@ -152,16 +162,20 @@ E.g.:
     void GetJobResult(String jobID)
 
 *Description:*
-* Sends a request to IDOL OnDemand to retrieve the content identified by the jobID.
 
-**Parameter:**
-* jobID: the job ID returned from an IDOL OnDemand API upon an asynchronous call.
+* Sends a request to Haven OnDemand to retrieve content identified by the jobID.
 
-**Response:** 
+*Parameter:*
+
+* jobID: the job ID returned from a Haven OnDemand API upon an asynchronous call.
+
+*Response:*
+ 
 * Response will be returned via the requestCompletedWithContent(String response)
 
-**Example code:**
-    Parse a JSON string contained a jobID and call the function to get the actual content from IDOL OnDemand server
+*Example code:*
+## 
+    // Parse a JSON string contained a jobID and call the function to get the actual content from Haven OnDemand server
 
     @Override
     public void requestCompletedWithJobID(String response) 
@@ -170,16 +184,16 @@ E.g.:
             JSONObject mainObject = new JSONObject(response);
             if (!mainObject.isNull("jobID")) {
                 jobID = mainObject.getString("jobID");
-                iodClient.GetJobResult(jobID);
+                hodClient.GetJobResult(jobID);
             }
         } catch (Exception ex) { }
     }
 
 ----
 ## API callback functions
-In your class, you will need to inherit the IIODClientCallback interface and implement callback functions to receive responses from the server
+In your class, you will need to inherit the IHODClientCallback interface and implement callback functions to receive responses from the server
 
-    public class MyClass implements IIODClientCallback {
+    public class MyClass implements IHODClientCallback {
     
         @Override
         public void requestCompletedWithJobID(String response) {}
@@ -200,7 +214,7 @@ When you call the GetRequest() or PostRequest() with the ASYNC mode, the respons
     
     }
 # 
-When you call the GetRequest() or PostRequest() with the SYNC mode, the response will be returned to this callback function. The response is a JSON string containing the actual result of the service.
+When you call the GetRequest() or PostRequest() with the SYNC mode or call the GetJobReslt() function, the response will be returned to this callback function. The response is a JSON string containing the actual result of the service.
 
     @Override
     public void requestCompletedWithContent(String response) 
@@ -221,26 +235,26 @@ If there is an error occurred, the error message will be returned to this callba
 
 **Call the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
 
-    import com.iod.api.iodclient.IIODClientCallback;
-    import com.iod.api.iodclient.IODApps;
-    import com.iod.api.iodclient.IODClient;
+    import com.hod.api.hodclient.IHODClientCallback;
+    import com.hod.api.hodclient.HODApps;
+    import com.hod.api.hodclient.HODClient;
     
-    public class MyActivity extends Activity implements IIODClientCallback {
+    public class MyActivity extends Activity implements IHODClientCallback {
 
-        IODClient iodClient;
+        HODClient hodClient;
 	
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             
-            iodClient = new IODClient("your-apikey", this);
+            hodClient = new HODClient("your-apikey", this);
             
-            useIODClient();
+            useHODClient();
         }
 
-        private void useIODClient() {
-            String iodApp = IODApps.ENTITY_EXTRACTION;
+        private void useHODClient() {
+            String hodApp = HODApps.ENTITY_EXTRACTION;
             Map<String, Object> params = new HashMap<String, Object>();
             
             Map<String, String> arrays = new HashMap<String, String>();
@@ -250,7 +264,7 @@ If there is an error occurred, the error message will be returned to this callba
             params.put("arrays", arrays);
             params.put("unique_entities", "true");
 
-            iodClient.GetRequest(params, iodApp, IODClient.REQ_MODE.SYNC);
+            hodClient.GetRequest(params, hodApp, HODClient.REQ_MODE.SYNC);
         }
         
         // implement callback functions
@@ -294,32 +308,32 @@ If there is an error occurred, the error message will be returned to this callba
  
 **Call the OCR Document API to recognize text from an image with an asynchronous POST request**
 
-    import com.iod.api.iodclient.IIODClientCallback;
-    import com.iod.api.iodclient.IODApps;
-    import com.iod.api.iodclient.IODClient;
+    import com.hod.api.hodclient.IHODClientCallback;
+    import com.hod.api.hodclient.HODApps;
+    import com.hod.api.hodclient.HODClient;
     
-    public class MyActivity extends Activity implements IIODClientCallback {
+    public class MyActivity extends Activity implements IHODClientCallback {
 
-        IODClient iodClient;
+        HODClient hodClient;
 	
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             
-            iodClient = new IODClient("your-apikey", this);
+            hodClient = new HODClient("your-apikey", this);
             
-            useIODClient();
+            useHODClient();
         }
 
-        private void useIODClient() {
-            String iodApp = IODApps.OCR_DOCUMENT;
+        private void useHODClient() {
+            String hodApp = HODApps.OCR_DOCUMENT;
             Map<String, Object> params = new HashMap<String, Object>();
             
             params.put("file", "path/and/filename");
             params.put("mode", "document_photo");
 
-            iodClient.PostRequest(params, iodApp, IODClient.REQ_MODE.ASYNC);
+            hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
         }
         
         // implement delegated functions
@@ -334,7 +348,7 @@ If there is an error occurred, the error message will be returned to this callba
                 JSONObject mainObject = new JSONObject(response);
                 if (!mainObject.isNull("jobID")) {
                     jobID = mainObject.getString("jobID");
-                    iodClient.GetJobResult(jobID);
+                    hodClient.GetJobResult(jobID);
                 }
             } catch (Exception ex) {
                 ;//HandleException(response);
@@ -379,4 +393,4 @@ If there is an error occurred, the error message will be returned to this callba
 ## License
 Licensed under the MIT License.
 
-IODClient library uses the Apache httpmime-4.3.2 and httpcore-4.3.2 libraries. For your convenience, the library project included the httpmime-4.3.2.jar and httpcore-4.3.jar files. The dependent components are licensed under the Apache License 2.0. Please see the files called LICENSE.txt and NOTICE.txt for more information.
+HODClient library uses the Apache httpmime-4.3.2 and httpcore-4.3.2 libraries. For your convenience, the library project included the httpmime-4.3.2.jar and httpcore-4.3.jar files. The dependent components are licensed under the Apache License 2.0. Please see the files called LICENSE.txt and NOTICE.txt for more information.
