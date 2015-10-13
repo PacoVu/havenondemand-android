@@ -28,8 +28,10 @@ import org.apache.http.params.HttpParams;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -40,8 +42,8 @@ public class HODClient {
     public  HODApps hodApp;
     public enum REQ_MODE {SYNC, ASYNC };
     private String apiKey = "";
-    private String hodBase = "https://api.idolondemand.com/1/api/";
-    private String hodJobResult = "https://api.idolondemand.com/1/job/result/";
+    private String hodBase = "https://api.havenondemand.com/1/api/";
+    private String hodJobResult = "https://api.havenondemand.com/1/job/result/";
     private boolean getJobID = true;
     private String version = "v1";
     private boolean isBusy = false;
@@ -63,7 +65,7 @@ public class HODClient {
         this.apiKey = apiKey;
         this.version = "v1";
         mCallback = callback;
-        initializeHTTP();;
+        initializeHTTP();
     }
     private void initializeHTTP() {
         hodApp = new HODApps();
@@ -87,34 +89,36 @@ public class HODClient {
         new MakeAsyncActivitiesTask().execute(null, queryStr, "");
     }
     public void GetRequest(Map<String,Object> param, String iodApp, REQ_MODE mode) {
-        httpMethod = HTTP_METHOD.GET;
-        String queryStr = hodBase;
-        if (mode == REQ_MODE.SYNC) {
-            queryStr += "sync/";
-            getJobID = false;
+        if (!isBusy) {
+            httpMethod = HTTP_METHOD.GET;
+            String queryStr = hodBase;
+            if (mode == REQ_MODE.SYNC) {
+                queryStr += "sync/";
+                getJobID = false;
+            } else {
+                queryStr += "async/";
+                getJobID = true;
+            }
+            queryStr += iodApp;
+            queryStr += "/" + version;
+            new MakeAsyncActivitiesTask().execute(param, queryStr, "");
         }
-        else {
-            queryStr += "async/";
-            getJobID = true;
-        }
-        queryStr += iodApp;
-        queryStr += "/" + version;
-        new MakeAsyncActivitiesTask().execute(param, queryStr, "");
     }
     public void PostRequest(Map<String,Object> param, String iodApp, REQ_MODE mode) {
-        httpMethod = HTTP_METHOD.POST;
-        String queryStr = hodBase;
-        if (mode == REQ_MODE.SYNC) {
-            queryStr += "sync/";
-            getJobID = false;
+        if (!isBusy) {
+            httpMethod = HTTP_METHOD.POST;
+            String queryStr = hodBase;
+            if (mode == REQ_MODE.SYNC) {
+                queryStr += "sync/";
+                getJobID = false;
+            } else {
+                queryStr += "async/";
+                getJobID = true;
+            }
+            queryStr += iodApp;
+            queryStr += "/" + version;
+            new MakeAsyncActivitiesTask().execute(param, queryStr, "");
         }
-        else {
-            queryStr += "async/";
-            getJobID = true;
-        }
-        queryStr += iodApp;
-        queryStr += "/" + version;
-        new MakeAsyncActivitiesTask().execute(param, queryStr, "");
     }
     private void ParseResponse(String response) {
         if (getJobID)
@@ -131,6 +135,7 @@ public class HODClient {
         protected String doInBackground(Object... params)
         {
             isError = false;
+            isBusy = true;
             String url = "";
             URI uri;
             if (httpMethod == HTTP_METHOD.GET) {
@@ -142,14 +147,14 @@ public class HODClient {
                         if (key.equals("arrays")) {
                             Map<String, String> submap = (Map) e.getValue();
                             for (Map.Entry<String, String> m : submap.entrySet()) {
-                                String subkey = m.getKey();
-                                String subvalue = m.getValue();
-                                String[] array = subvalue.split(",");
-                                for (String item : array) {
+                                String subKey = m.getKey();
+                                String subValue = m.getValue();
+                                String[] itemArr = subValue.split(",");
+                                for (String item : itemArr) {
                                     url += "&";
-                                    url += subkey;
+                                    url += subKey;
                                     url += "=";
-                                    url += item;
+                                    url += item.trim();
                                 }
                             }
                         } else {
@@ -157,7 +162,11 @@ public class HODClient {
                             url += "&";
                             url += key;
                             url += "=";
-                            url += value;
+                            try {
+                                url += URLEncoder.encode(value, "utf-8");
+                            } catch (UnsupportedEncodingException ex) {
+                                return ex.getMessage();
+                            }
                         }
                     }
                 }
@@ -192,11 +201,11 @@ public class HODClient {
                         }  else if (key.equals("arrays")) {
                             Map<String,String> submap = (Map)e.getValue();
                             for (Map.Entry<String, String> m : submap.entrySet()) {
-                                String subkey = m.getKey();
-                                String subval = m.getValue();
-                                String[] array = subval.split(",");
-                                for (String item : array)
-                                    reqEntity.addPart(subkey, new StringBody(item, ContentType.TEXT_PLAIN));
+                                String subKey = m.getKey();
+                                String subValue = m.getValue();
+                                String[] itemArr = subValue.split(",");
+                                for (String item : itemArr)
+                                    reqEntity.addPart(subKey, new StringBody(item.trim(), ContentType.TEXT_PLAIN));
                             }
                         } else {
                             String value = e.getValue().toString();
@@ -238,8 +247,6 @@ public class HODClient {
                 isError = true;
                 return  e.getMessage();
             }
-
-            //return null;
         }
 
         @Override
@@ -249,6 +256,7 @@ public class HODClient {
 
         @Override
         protected void onPostExecute(String sResponse) {
+            isBusy = false;
             if (isError) {
                 ParseError(sResponse);
             } else {
