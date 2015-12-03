@@ -89,19 +89,21 @@ HODClient library requires a minimum Android API level 10.
 
 >Note: In the case of a parameter type is an array<>, the value must be defined as a List<String> object. 
 
-E.g.:
-    Map<String, Object> params = new HashMap<String, Object>();
-    List<String> urls = new ArrayList<String>();
-    urls.add("http://www.cnn.com");
-    urls.add("http://www.bbc.com");
-    params.put("url", urls);
-    params.put("unique_entities", "true");
-    
-    List<String> entities = new ArrayList<String>();
-    entities.add("people_eng");
-    entities.add("places_eng");
-    params.put("entity_type", entities);
+>E.g.:
 
+```
+Map<String, Object> params = new HashMap<String, Object>();
+List<String> urls = new ArrayList<String>();
+urls.add("http://www.cnn.com");
+urls.add("http://www.bbc.com");
+params.put("url", urls);
+params.put("unique_entities", "true");
+
+List<String> entities = new ArrayList<String>();
+entities.add("people_eng");
+entities.add("places_eng");
+params.put("entity_type", entities);
+```
 
 * hodApp: a string to identify a Haven OnDemand API. E.g. "extractentities". Current supported apps are listed in the HODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
@@ -140,19 +142,21 @@ E.g.:
 
 >Note: In the case of a parameter type is an array<>, the value must be defined as a List<String> object. 
 
-E.g.:
-    Map<String, Object> params = new HashMap<String, Object>();
-    List<String> urls = new ArrayList<String>();
-    urls.add("http://www.cnn.com");
-    urls.add("http://www.bbc.com");
-    params.put("url", urls);
-    params.put("unique_entities", "true");
-    
-    List<String> entities = new ArrayList<String>();
-    entities.add("people_eng");
-    entities.add("places_eng");
-    params.put("entity_type", entities);
+>E.g.:
 
+```
+Map<String, Object> params = new HashMap<String, Object>();
+List<String> urls = new ArrayList<String>();
+urls.add("http://www.cnn.com");
+urls.add("http://www.bbc.com");
+params.put("url", urls);
+params.put("unique_entities", "true");
+
+List<String> entities = new ArrayList<String>();
+entities.add("people_eng");
+entities.add("places_eng");
+params.put("entity_type", entities);
+```
 
 * hodApp: a string to identify a Haven OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
