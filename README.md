@@ -87,7 +87,7 @@ HODClient library requires a minimum Android API level 10.
 
 * params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API.
 
->Note: In the case of a parameter type is an array<>, the value must be defined as a List<String> object. 
+>Note: In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object. 
 
 >E.g.:
 
@@ -140,7 +140,7 @@ params.put("entity_type", entities);
 
 * params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API. 
 
->Note: In the case of a parameter type is an array<>, the value must be defined as a List<String> object. 
+>Note: In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object. 
 
 >E.g.:
 
