@@ -5,6 +5,7 @@ package hod.api.hodclient;
  */
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import org.apache.http.Consts;
@@ -32,11 +33,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created by Paco on 8/27/2015.
- */
 
 public class HODClient {
     public  HODApps hodApp;
@@ -65,7 +64,7 @@ public class HODClient {
         this.apiKey = apiKey;
         this.version = "v1";
         mCallback = callback;
-        initializeHTTP();
+        initializeHTTP();;
     }
     private void initializeHTTP() {
         hodApp = new HODApps();
@@ -88,37 +87,31 @@ public class HODClient {
         getJobID = false;
         new MakeAsyncActivitiesTask().execute(null, queryStr, "");
     }
-    public void GetRequest(Map<String,Object> param, String iodApp, REQ_MODE mode) {
-        if (!isBusy) {
-            httpMethod = HTTP_METHOD.GET;
-            String queryStr = hodBase;
-            if (mode == REQ_MODE.SYNC) {
-                queryStr += "sync/";
-                getJobID = false;
-            } else {
-                queryStr += "async/";
-                getJobID = true;
-            }
-            queryStr += iodApp;
-            queryStr += "/" + version;
-            new MakeAsyncActivitiesTask().execute(param, queryStr, "");
+    public void GetRequest(Map<String,Object> params, String hodApp, REQ_MODE mode) {
+        httpMethod = HTTP_METHOD.GET;
+        String endPoint = hodBase;
+        if (mode == REQ_MODE.SYNC) {
+            endPoint += String.format("sync/%s/%s", hodApp, version);
+            getJobID = false;
         }
+        else {
+            endPoint += String.format("async/%s/%s", hodApp, version);
+            getJobID = true;
+        }
+        new MakeAsyncActivitiesTask().execute(params, endPoint, "");
     }
-    public void PostRequest(Map<String,Object> param, String iodApp, REQ_MODE mode) {
-        if (!isBusy) {
-            httpMethod = HTTP_METHOD.POST;
-            String queryStr = hodBase;
-            if (mode == REQ_MODE.SYNC) {
-                queryStr += "sync/";
-                getJobID = false;
-            } else {
-                queryStr += "async/";
-                getJobID = true;
-            }
-            queryStr += iodApp;
-            queryStr += "/" + version;
-            new MakeAsyncActivitiesTask().execute(param, queryStr, "");
+    public void PostRequest(Map<String,Object> params, String hodApp, REQ_MODE mode) {
+        httpMethod = HTTP_METHOD.POST;
+        String endPoint = hodBase;
+        if (mode == REQ_MODE.SYNC) {
+            endPoint += String.format("sync/%s/%s", hodApp, version);
+            getJobID = false;
         }
+        else {
+            endPoint += String.format("async/%s/%s", hodApp, version);
+            getJobID = true;
+        }
+        new MakeAsyncActivitiesTask().execute(params, endPoint, "");
     }
     private void ParseResponse(String response) {
         if (getJobID)
@@ -135,36 +128,36 @@ public class HODClient {
         protected String doInBackground(Object... params)
         {
             isError = false;
-            isBusy = true;
             String url = "";
             URI uri;
             if (httpMethod == HTTP_METHOD.GET) {
-                url = params[1] + "?apikey=" +  apiKey;
+                url = String.format("%s?apikey=%s", params[1], apiKey);
                 if (params[0] != null) {
                     Map<String, Object> map = (Map) params[0];
                     for (Map.Entry<String, Object> e : map.entrySet()) {
                         String key = e.getKey();
-                        if (key.equals("arrays")) {
-                            Map<String, String> submap = (Map) e.getValue();
-                            for (Map.Entry<String, String> m : submap.entrySet()) {
-                                String subKey = m.getKey();
-                                String subValue = m.getValue();
-                                String[] itemArr = subValue.split(",");
-                                for (String item : itemArr) {
-                                    url += "&";
-                                    url += subKey;
-                                    url += "=";
-                                    url += item.trim();
+                        if (key.equals("file")) {
+                            isError = true;
+                            return "Failed. File upload must be used with PostRequest method.";
+                        }
+                        Object val = e.getValue();
+                        String type =  val.getClass().getName();
+                        if (type.equals("java.util.ArrayList")) {
+                            for (String m : (ArrayList<String>) val) {
+                                try {
+                                    String value = URLEncoder.encode(m, "utf-8");
+                                    url += String.format("&%s=%s", key, value);
+                                } catch (UnsupportedEncodingException ex) {
+                                    isError = true;
+                                    return ex.getMessage();
                                 }
                             }
                         } else {
-                            String value = e.getValue().toString();
-                            url += "&";
-                            url += key;
-                            url += "=";
                             try {
-                                url += URLEncoder.encode(value, "utf-8");
+                                String value = URLEncoder.encode(val.toString(), "utf-8");
+                                url += String.format("&%s=%s", key, value);
                             } catch (UnsupportedEncodingException ex) {
+                                isError = true;
                                 return ex.getMessage();
                             }
                         }
@@ -190,26 +183,47 @@ public class HODClient {
                     reqEntity.addPart("apikey", new StringBody(apiKey, ContentType.TEXT_PLAIN));
                     for (Map.Entry<String, Object> e : map.entrySet()) {
                         String key = e.getKey();
-                        if (key.equals("file")) {
-                            String fileFullName = (String)e.getValue();
-                            String fileName = fileFullName.substring(fileFullName.lastIndexOf("/") + 1);
-                            File pFile = new File(fileFullName);
-                            Uri pUri = Uri.fromFile(pFile);
-                            String mimeType = getMimeType(pUri.toString());
-                            ContentType type = ContentType.create(mimeType, Consts.ISO_8859_1);
-                            reqEntity.addBinaryBody("file", pFile, type, fileName);
-                        }  else if (key.equals("arrays")) {
-                            Map<String,String> submap = (Map)e.getValue();
-                            for (Map.Entry<String, String> m : submap.entrySet()) {
-                                String subKey = m.getKey();
-                                String subValue = m.getValue();
-                                String[] itemArr = subValue.split(",");
-                                for (String item : itemArr)
-                                    reqEntity.addPart(subKey, new StringBody(item.trim(), ContentType.TEXT_PLAIN));
+                        Object val = e.getValue();
+                        String objType =  val.getClass().getName();
+                        if (objType.equals("java.util.ArrayList")) {
+                            if (key.equals("file")) {
+                                for (String m : (ArrayList<String>) val) {
+                                    String fileName = m.substring(m.lastIndexOf("/") + 1);
+                                    File pFile = new File(m);
+                                    if (pFile.exists()) {
+                                        Uri pUri = Uri.fromFile(pFile);
+                                        String mimeType = getMimeType(pUri.toString());
+                                        ContentType type = ContentType.create(mimeType, Consts.ISO_8859_1);
+                                        reqEntity.addBinaryBody("file", pFile, type, fileName);
+                                    } else {
+                                        isError = true;
+                                        Log.e("HODClient", "Failed. File not found");
+                                        return "Failed. File not found";
+                                    }
+                                }
+                            } else {
+                                for (String m : (ArrayList<String>) val) {
+                                    reqEntity.addPart(key, new StringBody(m, ContentType.TEXT_PLAIN));
+                                }
                             }
                         } else {
-                            String value = e.getValue().toString();
-                            reqEntity.addPart(key, new StringBody(value, ContentType.TEXT_PLAIN));
+                            if (key.equals("file")) {
+                                String fileFullName = val.toString();
+                                String fileName = fileFullName.substring(fileFullName.lastIndexOf("/") + 1);
+                                File pFile = new File(fileFullName);
+                                if (pFile.exists()) {
+                                Uri pUri = Uri.fromFile(pFile);
+                                String mimeType = getMimeType(pUri.toString());
+                                ContentType type = ContentType.create(mimeType, Consts.ISO_8859_1);
+                                reqEntity.addBinaryBody("file", pFile, type, fileName);
+                                } else {
+                                    isError = true;
+                                    Log.e("HODClient", "Failed. File not found");
+                                    return "Failed. File not found";
+                                }
+                            } else {
+                                reqEntity.addPart(key, new StringBody((String)val, ContentType.TEXT_PLAIN));
+                            }
                         }
                     }
                     httpPost.setEntity(reqEntity.build());
@@ -247,6 +261,8 @@ public class HODClient {
                 isError = true;
                 return  e.getMessage();
             }
+
+            //return null;
         }
 
         @Override
@@ -256,7 +272,6 @@ public class HODClient {
 
         @Override
         protected void onPostExecute(String sResponse) {
-            isBusy = false;
             if (isError) {
                 ParseError(sResponse);
             } else {

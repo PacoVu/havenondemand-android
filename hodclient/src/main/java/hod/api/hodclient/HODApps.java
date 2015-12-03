@@ -59,6 +59,7 @@ public class HODApps {
     public final static String QUERY_TEXT_INDEX = "querytextindex";
     public final static String RETRIEVE_INDEX_FIELDS = "retrieveindexfields";
 
+    public final static String AUTO_COMPLETE = "autocomplete";
     public final static String CLASSIFY_DOCUMENT = "classifydocument";
     public final static String EXTRACT_CONCEPTS = "extractconcepts";
     public final static String CATEGORIZE_DOCUMENT = "categorizedocument";
