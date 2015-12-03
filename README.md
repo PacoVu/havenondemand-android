@@ -1,8 +1,10 @@
-# HODClient Library for Android. V1.0
+# HODClient Library for Android. V2.0
 
 ----
 ## Overview
 HODClient library for Android is a lightweight Java based API, which helps you easily integrate your Android app with HP Haven OnDemand Services.
+
+HODClient V2.0 supports bulk input (source inputs can be an array) where an HOD API is capable of doing so.
 
 HODClient library requires a minimum Android API level 10.
 
@@ -85,14 +87,21 @@ HODClient library requires a minimum Android API level 10.
 
 * params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API.
 
->Note: 
+>Note: In the case of a parameter type is an array<>, the value must be defined as a List<String> object. 
 
->In the case of a parameter type is an array<>, the key must be defined as "arrays" and the value must be a Map\<String,String\> object with the key is the parameter name and the values separated by commas ",". 
->E.g.:
-## 
-    Map<String, String> entity_array = new HashMap<String, String>();
-    entity_array.put("entity_type", "people_eng,places_eng");
-    params.put("arrays", entity_array);
+E.g.:
+    Map<String, Object> params = new HashMap<String, Object>();
+    List<String> urls = new ArrayList<String>();
+    urls.add("http://www.cnn.com");
+    urls.add("http://www.bbc.com");
+    params.put("url", urls);
+    params.put("unique_entities", "true");
+    
+    List<String> entities = new ArrayList<String>();
+    entities.add("people_eng");
+    entities.add("places_eng");
+    params.put("entity_type", entities);
+
 
 * hodApp: a string to identify a Haven OnDemand API. E.g. "extractentities". Current supported apps are listed in the HODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
@@ -110,9 +119,10 @@ HODClient library requires a minimum Android API level 10.
     String hodApp = HODApps.ENTITY_EXTRACTION;
     Map<String,Object> params =  new HashMap<String,Object>();
     params.put("url", "http://www.cnn.com");
-    Map<String, String> entity_array = new HashMap<String, String>();
-    entity_array.put("entity_type", "people_eng,places_eng");
-    params.put("arrays", entity_array);
+    List<String> entities = new ArrayList<String>();
+    entities.add("people_eng");
+    entities.add("places_eng");
+    params.put("entity_type", entities);
     hodClient.GetRequest(params, hodApp, HODClient.REQ_MODE.SYNC);
 
 ----
@@ -128,14 +138,21 @@ HODClient library requires a minimum Android API level 10.
 
 * params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API. 
 
->Note: 
+>Note: In the case of a parameter type is an array<>, the value must be defined as a List<String> object. 
 
->In the case of a parameter type is an array<>, the key must be defined as "arrays" and the value must be a Map\<String,String\> object with the key is the parameter name and the values separated by commas ",".
 E.g.:
-## 
-    Map<String, String> entity_array = new HashMap<String, String>();
-    entity_array.put("entity_type", "people_eng,places_eng");
-    params.put("arrays", entity_array);
+    Map<String, Object> params = new HashMap<String, Object>();
+    List<String> urls = new ArrayList<String>();
+    urls.add("http://www.cnn.com");
+    urls.add("http://www.bbc.com");
+    params.put("url", urls);
+    params.put("unique_entities", "true");
+    
+    List<String> entities = new ArrayList<String>();
+    entities.add("people_eng");
+    entities.add("places_eng");
+    params.put("entity_type", entities);
+
 
 * hodApp: a string to identify a Haven OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
@@ -233,7 +250,7 @@ If there is an error occurred, the error message will be returned to this callba
 ----
 ## Demo code 1: 
 
-**Call the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
+**Call the Entity Extraction API to extract people and places from bbc.com and cnn.com websites with a synchronous GET request**
 
     import com.hod.api.hodclient.IHODClientCallback;
     import com.hod.api.hodclient.HODApps;
@@ -257,13 +274,17 @@ If there is an error occurred, the error message will be returned to this callba
             String hodApp = HODApps.ENTITY_EXTRACTION;
             Map<String, Object> params = new HashMap<String, Object>();
             
-            Map<String, String> arrays = new HashMap<String, String>();
-            arrays.put("entity_type", "people_eng,places_eng");
-
-            params.put("url", "http://www.cnn.com");
-            params.put("arrays", arrays);
+            List<String> urls = new ArrayList<String>();
+            urls.add("http://www.cnn.com");
+            urls.add("http://www.bbc.com");
+            params.put("url", urls);
             params.put("unique_entities", "true");
-
+    
+            List<String> entities = new ArrayList<String>();
+            entities.add("people_eng");
+            entities.add("places_eng");
+            params.put("entity_type", entities);
+            
             hodClient.GetRequest(params, hodApp, HODClient.REQ_MODE.SYNC);
         }
         
