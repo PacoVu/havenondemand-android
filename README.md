@@ -4,13 +4,9 @@
 ## Overview
 HODClient library for Android is a lightweight Java based API, which helps you easily integrate your Android app with HP Haven OnDemand Services.
 
-<<<<<<< HEAD
 HODClient library v2.0 supports bulk input (source inputs can be an array) where an HOD API is capable of doing so.
 
 Version 2.0 also includes HODResponseParser library.
-=======
-HODClient V2.0 supports bulk input (source inputs can be an array) where an HOD API is capable of doing so.
->>>>>>> origin/master
 
 HODClient library requires a minimum Android API level 10.
 
@@ -93,7 +89,6 @@ HODClient library requires a minimum Android API level 10.
 
 >Note: In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object. 
 
-<<<<<<< HEAD
 >In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object.
 >E.g.:
 ## 
@@ -107,23 +102,6 @@ HODClient library requires a minimum Android API level 10.
     entities.add("people_eng");
     entities.add("places_eng");
     params.put("entity_type", entities);
-=======
->E.g.:
-
-```
-Map<String, Object> params = new HashMap<String, Object>();
-List<String> urls = new ArrayList<String>();
-urls.add("http://www.cnn.com");
-urls.add("http://www.bbc.com");
-params.put("url", urls);
-params.put("unique_entities", "true");
-
-List<String> entities = new ArrayList<String>();
-entities.add("people_eng");
-entities.add("places_eng");
-params.put("entity_type", entities);
-```
->>>>>>> origin/master
 
 * hodApp: a string to identify a Haven OnDemand API. E.g. "extractentities". Current supported apps are listed in the HODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
@@ -162,7 +140,6 @@ params.put("entity_type", entities);
 
 >Note: In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object. 
 
-<<<<<<< HEAD
 >In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object.
 >E.g.:
 ## 
@@ -176,23 +153,6 @@ params.put("entity_type", entities);
     entities.add("people_eng");
     entities.add("places_eng");
     params.put("entity_type", entities);
-=======
->E.g.:
-
-```
-Map<String, Object> params = new HashMap<String, Object>();
-List<String> urls = new ArrayList<String>();
-urls.add("http://www.cnn.com");
-urls.add("http://www.bbc.com");
-params.put("url", urls);
-params.put("unique_entities", "true");
-
-List<String> entities = new ArrayList<String>();
-entities.add("people_eng");
-entities.add("places_eng");
-params.put("entity_type", entities);
-```
->>>>>>> origin/master
 
 * hodApp: a string to identify a Haven OnDemand API. E.g. "ocrdocument". Current supported apps are listed in the IODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
@@ -539,14 +499,6 @@ If there is an error occurred, the error message will be returned to this callba
 
         private void useHODClient() {
             String hodApp = HODApps.ENTITY_EXTRACTION;
-<<<<<<< HEAD
-            params.put("url", "http://www.cnn.com");
-            List<String> entities = new ArrayList<String>();
-            entities.add("people_eng");
-            entities.add("places_eng");
-            params.put("entity_type", entities);
-            params.put("unique_entities", "true");
-=======
             Map<String, Object> params = new HashMap<String, Object>();
             
             List<String> urls = new ArrayList<String>();
@@ -559,7 +511,6 @@ If there is an error occurred, the error message will be returned to this callba
             entities.add("people_eng");
             entities.add("places_eng");
             params.put("entity_type", entities);
->>>>>>> origin/master
             
             hodClient.GetRequest(params, hodApp, HODClient.REQ_MODE.SYNC);
         }
