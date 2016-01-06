@@ -342,7 +342,8 @@ If there is an error occurred, the error message will be returned to this callba
 *Description:*
  
 * Parses a json string and returns an object type based on the hodApp name.
-> Note: Only APIs which return standard responses can be parsed by using this function. A list of supported APIs can be found from the SupportedApps class.
+
+>Note: Only APIs which return standard responses can be parsed by using this function. A list of supported APIs can be found from the SupportedApps class.
 
 *Parameters:*
 
