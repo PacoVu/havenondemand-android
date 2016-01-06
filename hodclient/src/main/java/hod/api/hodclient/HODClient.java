@@ -87,15 +87,12 @@ public class HODClient {
         getJobID = false;
         new MakeAsyncActivitiesTask().execute(null, queryStr, "");
     }
-<<<<<<< HEAD
     public void GetJobStatus(String jobID) {
         httpMethod = HTTP_METHOD.GET;
         String queryStr = String.format("%s%s", hodJobStatus, jobID);
         getJobID = false;
         new MakeAsyncActivitiesTask().execute(null, queryStr, "");
     }
-=======
->>>>>>> origin/master
     public void GetRequest(Map<String,Object> params, String hodApp, REQ_MODE mode) {
         httpMethod = HTTP_METHOD.GET;
         String endPoint = hodBase;
@@ -115,19 +112,11 @@ public class HODClient {
         if (mode == REQ_MODE.SYNC) {
             endPoint += String.format("sync/%s/%s", hodApp, version);
             getJobID = false;
-<<<<<<< HEAD
         }
         else {
             endPoint += String.format("async/%s/%s", hodApp, version);
             getJobID = true;
         }
-=======
-        }
-        else {
-            endPoint += String.format("async/%s/%s", hodApp, version);
-            getJobID = true;
-        }
->>>>>>> origin/master
         new MakeAsyncActivitiesTask().execute(params, endPoint, "");
     }
     private void ParseResponse(String response) {
@@ -229,17 +218,10 @@ public class HODClient {
                                 String fileName = fileFullName.substring(fileFullName.lastIndexOf("/") + 1);
                                 File pFile = new File(fileFullName);
                                 if (pFile.exists()) {
-<<<<<<< HEAD
                                     Uri pUri = Uri.fromFile(pFile);
                                     String mimeType = getMimeType(pUri.toString());
                                     ContentType type = ContentType.create(mimeType, Consts.ISO_8859_1);
                                     reqEntity.addBinaryBody("file", pFile, type, fileName);
-=======
-                                Uri pUri = Uri.fromFile(pFile);
-                                String mimeType = getMimeType(pUri.toString());
-                                ContentType type = ContentType.create(mimeType, Consts.ISO_8859_1);
-                                reqEntity.addBinaryBody("file", pFile, type, fileName);
->>>>>>> origin/master
                                 } else {
                                     isError = true;
                                     Log.e("HODClient", "Failed. File not found");
