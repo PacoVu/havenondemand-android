@@ -3,7 +3,7 @@ package hod.response.parser;
 /**
  * Created by vanphongvu on 1/5/16.
  */
-public class SupportedApps {
+public class StandardResponse {
     public final static String RECOGNIZE_SPEECH = "recognizespeech";
 
     public final static String CANCEL_CONNECTOR_SCHEDULE = "cancelconnectorschedule";

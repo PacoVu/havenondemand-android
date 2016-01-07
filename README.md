@@ -343,11 +343,11 @@ If there is an error occurred, the error message will be returned to this callba
  
 * Parses a json string and returns an object type based on the hodApp name.
 
->Note: Only APIs which return standard responses can be parsed by using this function. A list of supported APIs can be found from the SupportedApps class.
+>Note: Only APIs which return standard responses can be parsed by using this function. A list of supported APIs can be found from the StandardResponse class.
 
 *Parameters:*
 
-* hodApp: a string identify an HOD API. Supported APIs' standard responses are defined in the SupportedApps class. E.g. SupportedApps.RECOGNIZE_SPEECH.
+* hodApp: a string identify an HOD API. Supported APIs' standard responses are defined in the StandardResponse class. E.g. StandardResponse.RECOGNIZE_SPEECH.
 * jsonStr: a json string returned from a synchronous API call or from the GetJobResult() or GetJobStatus() function.
 
 *Return value:*
@@ -588,6 +588,7 @@ If there is an error occurred, the error message will be returned to this callba
     import hod.response.parser.HODErrorObject;
     import hod.response.parser.HODResponseParser;
     import hod.response.parser.OCRDocumentResponse;
+    import hod.response.parser.StandardResponse;
     
     public class MyActivity extends Activity implements IHODClientCallback {
 
@@ -629,7 +630,7 @@ If there is an error occurred, the error message will be returned to this callba
 
         @Override
         public void requestCompletedWithContent(String response) { 
-            OCRDocumentResponse resp = (OCRDocumentResponse) hodParser.ParseServerResponse(hodApp, response);
+            OCRDocumentResponse resp = (OCRDocumentResponse) hodParser.ParseServerResponse(StandardResponse.OCR_DOCUMENT, response);
             if (resp != null) {
                 String text = "";
                 for (OCRDocumentResponse.TextBlock block : resp.text_block) {
