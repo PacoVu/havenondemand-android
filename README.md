@@ -335,9 +335,9 @@ If there is an error occurred, the error message will be returned to this callba
     }
 
 ----
-**Function ParseServerResponse**
+**Function ParseStandardResponse**
 
-    Object ParseServerResponse(String hodApp, String jsonStr)
+    Object ParseStandardResponse(String hodApp, String jsonStr)
 
 *Description:*
  
@@ -359,7 +359,7 @@ If there is an error occurred, the error message will be returned to this callba
     // Parse the Sentiment Analysis response from within HODClient callback function
     void requestCompletedWithContent(string response)
     {
-        SentimentAnalysisResponse resp = (SentimentAnalysisResponse)parser.ParseServerResponse(HODApps.ANALYZE_SENTIMENT, response);
+        SentimentAnalysisResponse resp = (SentimentAnalysisResponse)parser.ParseStandardResponse(HODApps.ANALYZE_SENTIMENT, response);
         if (resp != null) {
             String positive = "";
             for (SentimentAnalysisResponse.Entity ent : resp.positive) {
@@ -630,7 +630,7 @@ If there is an error occurred, the error message will be returned to this callba
 
         @Override
         public void requestCompletedWithContent(String response) { 
-            OCRDocumentResponse resp = (OCRDocumentResponse) hodParser.ParseServerResponse(StandardResponse.OCR_DOCUMENT, response);
+            OCRDocumentResponse resp = (OCRDocumentResponse) hodParser.ParseStandardResponse(StandardResponse.OCR_DOCUMENT, response);
             if (resp != null) {
                 String text = "";
                 for (OCRDocumentResponse.TextBlock block : resp.text_block) {

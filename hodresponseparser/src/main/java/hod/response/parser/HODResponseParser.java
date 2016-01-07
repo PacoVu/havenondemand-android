@@ -38,15 +38,22 @@ public class HODResponseParser {
             if (!mainObject.isNull("jobID")) {
                 jobID = mainObject.getString("jobID");
             } else {
-                throw new HODResponseException(2, "jobID not found", "");
+                HODErrorObject error = new HODErrorObject();
+				error.error = HODErrorCode.INVALID_HOD_RESPONSE;
+				error.reason = "Unrecognized response from HOD";
+				this.AddError(error);
             }
         } catch (Exception ex) {
-            throw new HODResponseException(1, ex.getMessage(), "");
-            //throw new IODException(ex.getMessage());
+            HODErrorObject error = new HODErrorObject();
+            error.error = HODErrorCode.UNKNOWN_ERROR;
+            error.reason = "Unknown error";
+            error.detail = ex.getMessage();
+            this.AddError(error);
+            return jobID;
         }
         return jobID;
     }
-    public Object ParseServerResponse(String hodApp, String jsonStr)
+    public Object ParseStandardResponse(String hodApp, String jsonStr)
     {
         this.ResetErrorList();
         Object obj = null;
