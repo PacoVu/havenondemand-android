@@ -63,10 +63,10 @@ HODClient library requires a minimum Android API level 10.
     {
         HODClient hodClient = new HODClient("your-api-key", this);
         
-	@Override
+	    @Override
         public void requestCompletedWithJobID(String response){ }
         
-	@Override
+	    @Override
         public void requestCompletedWithContent(String response){ }
     	
         @Override
@@ -87,7 +87,7 @@ HODClient library requires a minimum Android API level 10.
 
 * params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API.
 
->Note: In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object. 
+>Note: 
 
 >In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object.
 >E.g.:
@@ -102,7 +102,7 @@ HODClient library requires a minimum Android API level 10.
     entities.add("people_eng");
     entities.add("places_eng");
     params.put("entity_type", entities);
-
+    
 * hodApp: a string to identify a Haven OnDemand API. E.g. "extractentities". Current supported apps are listed in the HODApps class.
 * mode [REQ_MODE.SYNC | REQ_MODE.ASYNC]: specifies API call as Asynchronous or Synchronous.
 
@@ -138,7 +138,7 @@ HODClient library requires a minimum Android API level 10.
 
 * params: a HashMap object containing key/value pair parameters to be sent to a Haven OnDemand API, where the keys are the parameters of that API. 
 
->Note: In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object. 
+>Note: 
 
 >In the case of a parameter type is an array<>, the value must be defined as a List\<String\> object.
 >E.g.:
@@ -335,19 +335,17 @@ If there is an error occurred, the error message will be returned to this callba
     }
 
 ----
-**Function ParseStandardResponse**
+**Function ParseSpeechRecognitionResponse**
 
-    Object ParseStandardResponse(String hodApp, String jsonStr)
+    SpeechRecognitionResponse ParseSpeechRecognitionResponse(String jsonStr)
 
 *Description:*
  
-* Parses a json string and returns an object type based on the hodApp name.
-
->Note: Only APIs which return standard responses can be parsed by using this function. A list of supported APIs can be found from the StandardResponse class.
+* Parses a json response from Haven OnDemand Speech Recognition API and returns a SpeechRegconitionResponse object.
+> Note: See the full list of standard parser functions from the Standard response parser functions section at the end of this document.
 
 *Parameters:*
 
-* hodApp: a string identify an HOD API. Supported APIs' standard responses are defined in the StandardResponse class. E.g. StandardResponse.RECOGNIZE_SPEECH.
 * jsonStr: a json string returned from a synchronous API call or from the GetJobResult() or GetJobStatus() function.
 
 *Return value:*
@@ -359,7 +357,7 @@ If there is an error occurred, the error message will be returned to this callba
     // Parse the Sentiment Analysis response from within HODClient callback function
     void requestCompletedWithContent(string response)
     {
-        SentimentAnalysisResponse resp = (SentimentAnalysisResponse)parser.ParseStandardResponse(HODApps.ANALYZE_SENTIMENT, response);
+        SentimentAnalysisResponse resp = hodParser.ParseSentimentAnalysisResponse(response);
         if (resp != null) {
             String positive = "";
             for (SentimentAnalysisResponse.Entity ent : resp.positive) {
@@ -474,7 +472,7 @@ If there is an error occurred, the error message will be returned to this callba
 ----
 ## Demo code 1: 
 
-**Call the Entity Extraction API to extract people and places from bbc.com and cnn.com websites with a synchronous GET request**
+**Call the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
 
     import com.hod.api.hodclient.IHODClientCallback;
     import com.hod.api.hodclient.HODApps;
@@ -500,18 +498,12 @@ If there is an error occurred, the error message will be returned to this callba
 
         private void useHODClient() {
             String hodApp = HODApps.ENTITY_EXTRACTION;
-            Map<String, Object> params = new HashMap<String, Object>();
-            
-            List<String> urls = new ArrayList<String>();
-            urls.add("http://www.cnn.com");
-            urls.add("http://www.bbc.com");
-            params.put("url", urls);
-            params.put("unique_entities", "true");
-    
+            params.put("url", "http://www.cnn.com");
             List<String> entities = new ArrayList<String>();
             entities.add("people_eng");
             entities.add("places_eng");
             params.put("entity_type", entities);
+            params.put("unique_entities", "true");
             
             hodClient.GetRequest(params, hodApp, HODClient.REQ_MODE.SYNC);
         }
@@ -540,7 +532,7 @@ If there is an error occurred, the error message will be returned to this callba
         // implement callback functions
         @Override
         public void requestCompletedWithContent(String response) { 
-            EntityExtractionResponse resp = (EntityExtractionResponse) parser.ParseCustomResponse(EntityExtractionResponse.class, response);
+            EntityExtractionResponse resp = (EntityExtractionResponse) hodParser.ParseCustomResponse(EntityExtractionResponse.class, response);
             if (resp != null) {
                 String values = "";
                 for (EntityExtractionResponse.Entity ent : resp.entities) {
@@ -588,7 +580,6 @@ If there is an error occurred, the error message will be returned to this callba
     import hod.response.parser.HODErrorObject;
     import hod.response.parser.HODResponseParser;
     import hod.response.parser.OCRDocumentResponse;
-    import hod.response.parser.StandardResponse;
     
     public class MyActivity extends Activity implements IHODClientCallback {
 
@@ -630,7 +621,7 @@ If there is an error occurred, the error message will be returned to this callba
 
         @Override
         public void requestCompletedWithContent(String response) { 
-            OCRDocumentResponse resp = (OCRDocumentResponse) hodParser.ParseStandardResponse(StandardResponse.OCR_DOCUMENT, response);
+            OCRDocumentResponse resp = hodParser.ParseOCRDocumentResponse(response);
             if (resp != null) {
                 String text = "";
                 for (OCRDocumentResponse.TextBlock block : resp.text_block) {
@@ -664,7 +655,57 @@ If there is an error occurred, the error message will be returned to this callba
             // handle error if any
         }
     }
-
+---
+## Standard response parser functions
+```
+ParseSpeechRecognitionResponse(String jsonStr)
+ParseCancelConnectorScheduleResponse(String jsonStr)
+ParseConnectorHistoryResponse(String jsonStr)
+ParseConnectorStatusResponse(String jsonStr)
+ParseCreateConnectorResponse(String jsonStr)
+ParseDeleteConnectorResponse(String jsonStr)
+ParseRetrieveConnectorConfigurationFileResponse(String jsonStr)
+ParseRetrieveConnectorConfigurationAttrResponse(String jsonStr)
+ParseStartConnectorResponse(String jsonStr)
+ParseStopConnectorResponse(String jsonStr)
+ParseUpdateConnectorResponse(String jsonStr)
+ParseExpandContainerResponse(String jsonStr)
+ParseStoreObjectResponse(String jsonStr)
+ParseViewDocumentResponse(String jsonStr)
+ParseGetCommonNeighborsResponse(String jsonStr)
+ParseGetNeighborsResponse(String jsonStr)
+ParseGetNodesResponse(String jsonStr)
+ParseGetShortestPathResponse(String jsonStr)
+ParseGetSubgraphResponse(String jsonStr)
+ParseSuggestLinksResponse(String jsonStr)
+ParseSummarizeGraphResponse(String jsonStr)
+ParseOCRDocumentResponse(String jsonStr)
+ParseRecognizeBarcodesResponse(String jsonStr)
+ParseRecognizeImagesResponse(String jsonStr)
+ParseDetectFacesResponse(String jsonStr)
+ParsePredictResponse(String jsonStr)
+ParseRecommendResponse(String jsonStr)
+ParseTrainPredictorResponse(String jsonStr)
+ParseCreateQueryProfileResponse(String jsonStr)
+ParseDeleteQueryProfileResponse(String jsonStr)
+ParseRetrieveQueryProfileResponse(String jsonStr)
+ParseUpdateQueryProfileResponse(String jsonStr)
+ParseFindRelatedConceptsResponse(String jsonStr)
+ParseAutoCompleteResponse(String jsonStr)
+ParseExtractConceptsResponse(String jsonStr)
+ParseExpandTermsResponse(String jsonStr)
+ParseHighlightTextResponse(String jsonStr)
+ParseIdentifyLanguageResponse(String jsonStr)
+ParseTokenizeTextResponse(String jsonStr)
+ParseSentimentAnalysisResponse(String jsonStr)
+ParseAddToTextIndexResponse(String jsonStr)
+ParseCreateTextIndexResponse(String jsonStr)
+ParseDeleteTextIndexResponse(String jsonStr)
+ParseDeleteFromTextIndexResponse(String jsonStr)
+ParseIndexStatusResponse(String jsonStr)
+ParseListResourcesResponse(String jsonStr)
+ParseRestoreTextIndexResponse(String jsonStr)
+```
 ----
 ## License
 Licensed under the MIT License.
