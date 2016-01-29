@@ -357,11 +357,8 @@ If there is an error occurred, the error message will be returned to this callba
     // Parse the Sentiment Analysis response from within HODClient callback function
     void requestCompletedWithContent(string response)
     {
-<<<<<<< HEAD
         SentimentAnalysisResponse resp = hodParser.ParseSentimentAnalysisResponse(response);
-=======
-        SentimentAnalysisResponse resp = (SentimentAnalysisResponse)hodParser.ParseStandardResponse(HODApps.ANALYZE_SENTIMENT, response);
->>>>>>> origin/master
+
         if (resp != null) {
             String positive = "";
             for (SentimentAnalysisResponse.Entity ent : resp.positive) {
