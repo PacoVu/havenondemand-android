@@ -357,7 +357,11 @@ If there is an error occurred, the error message will be returned to this callba
     // Parse the Sentiment Analysis response from within HODClient callback function
     void requestCompletedWithContent(string response)
     {
+<<<<<<< HEAD
         SentimentAnalysisResponse resp = hodParser.ParseSentimentAnalysisResponse(response);
+=======
+        SentimentAnalysisResponse resp = (SentimentAnalysisResponse)hodParser.ParseStandardResponse(HODApps.ANALYZE_SENTIMENT, response);
+>>>>>>> origin/master
         if (resp != null) {
             String positive = "";
             for (SentimentAnalysisResponse.Entity ent : resp.positive) {
@@ -387,7 +391,7 @@ If there is an error occurred, the error message will be returned to this callba
             sentiment += resp.aggregate.score + "\n---";
             //print sentiment result 
         } else { // check status or handle error
-            List<HODErrorObject> errors = parser.GetLastError();
+            List<HODErrorObject> errors = hodParser.GetLastError();
             String errorMsg = "";
             for (HODErrorObject err: errors) {
                 if (err.error == HODErrorCode.QUEUED) {
@@ -470,6 +474,44 @@ If there is an error occurred, the error message will be returned to this callba
         }
     }
 ----
+**Function GetLastError**
+
+    List<HODErrorObject> GetLastError()
+
+*Description:*
+ 
+* Get the latest error(s) if any happened during parsing the json string or HOD error returned from HOD server. > Note: The job "queued" or "in progress" status is also considered as an error situation. See the example below for how to detect and handle error status. 
+
+*Parameters:*
+
+* None.
+
+*Return value:*
+
+* An list object contains HODErrorObject
+
+*Example code:*
+
+```
+List<HODErrorObject> errors = parser.GetLastError();
+String errorMsg = "";
+for (HODErrorObject err : errors) {
+    if (err.error == HODErrorCode.QUEUED) {
+        hodClient.GetJobStatus(err.jobID);
+        return;
+    } else if (err.error == HODErrorCode.IN_PROGRESS) {
+        hodClient.GetJobStatus(err.jobID);
+        return;
+    } else {
+        errorMsg += String.format("Error code: %d\nError Reason: %s\n", err.error, err.reason);
+        if (err.detail != null)
+            errorMsg += "Error detail: " + err.detail + "\n";
+    }
+    // print errorMsg
+}
+```
+----
+
 ## Demo code 1: 
 
 **Call the Entity Extraction API to extract people and places from cnn.com website with a synchronous GET request**
@@ -707,6 +749,57 @@ ParseListResourcesResponse(String jsonStr)
 ParseRestoreTextIndexResponse(String jsonStr)
 ```
 ----
+## Supported standard response classes
+```
+RecognizeSpeechResponse
+CancelConnectorResponse
+ConnectorHistoryResponse
+ConnectorStatusResponse
+CreateConnectorResponse
+DeleteConnectorResponse
+RetrieveConnectorConfigurationAttributeResponse
+RetrieveConnectorConfigurationFileResponse
+StartConnectorResponse
+StopConnectorResponse
+UpdateConnectorResponse
+ExpandContainerResponse
+StoreObjectResponse
+ViewDocumentResponse
+GetCommonNeighborsResponse
+GetNeighborsResponse
+GetNodesResponse
+GetShortestPathResponse
+GetSubgraphResponse
+SuggestLinksResponse
+SummarizeGraphResponse
+OCRDocumentResponse
+BarcodeRecognitionResponse
+FaceDetectionResponse
+ImageRecognitionResponse
+PredictResponse
+RecommendResponse
+TrainPredictionResponse
+CreateQueryProfileResponse
+DeleteQueryProfileResponse
+RetrieveQueryProfileResponse
+UpdateQueryProfileResponse
+FindRelatedConceptsResponse
+AutoCompleteResponse
+ConceptExtractionResponse
+ExpandTermsResponse
+HighlightTextResponse
+LanguageIdentificationResponse
+SentimentAnalysisResponse
+TextTokenizationResponse
+AddToTextIndexResponse
+CreateTextIndexResponse
+DeleteTextIndexResponse
+DeleteFromTextIndexResponse
+IndexStatusResponse
+ListResourcesResponse
+RestoreTextIndexResponse
+```
+---
 ## License
 Licensed under the MIT License.
 
