@@ -342,6 +342,7 @@ If there is an error occurred, the error message will be returned to this callba
 *Description:*
  
 * Parses a json response from Haven OnDemand Speech Recognition API and returns a SpeechRegconitionResponse object.
+
 > Note: See the full list of standard parser functions from the Standard response parser functions section at the end of this document.
 
 *Parameters:*
