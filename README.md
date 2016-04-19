@@ -15,6 +15,7 @@ HODClient library requires a minimum Android API level 10.
 ----
 ## Integrate HavenOnDemand into an Android project
 Open your app build.gradle and add the dependency as follows:
+
     dependencies {
         // add hodclient and hodresponseparser dependencies
         compile 'com.havenondemand:hodclient:2.0'
