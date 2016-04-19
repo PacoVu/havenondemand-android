@@ -1,42 +1,25 @@
-# HODClient Library for Android. V2.0
+# HavenOndemand Library for Android. V2.0
 
 ----
 ## Overview
-HODClient library for Android is a lightweight Java based API, which helps you easily integrate your Android app with HP Haven OnDemand Services.
+HavenOndemand library for Android is a lightweight Java based API, which helps you easily access over 60 APIs from HPE HavenOnDemand platform.
 
-HODClient library v2.0 supports bulk input (source inputs can be an array) where an HOD API is capable of doing so.
+The library contains 2 packages:
 
-Version 2.0 also includes HODResponseParser library.
+HODClient package for sending HTTP GET/POST requests to HavenOnDemand APIs.
+
+HODResponseParser package for parsing JSON responses from HavenOnDemand APIs.
 
 HODClient library requires a minimum Android API level 10.
 
 ----
-## Integrate HODClient into an Android project
-1. Download the HODClient library project for Android. 
-2. Create a new or open an existing Android project
-3. Select the app main folder and click on the File menu then choose Import Module option.
->![](/images/importlibrary1.jpg)
-4. Browse to HODClient folder and click OK. The HODClient folder should be created into your project.
-![](/images/importlibrary2.jpg)
-5. Open the main project build.gradle and add packaging options and the dependency as follows:
-
-        android {
-            packagingOptions {
-                exclude 'META-INF/DEPENDENCIES'
-                exclude 'META-INF/NOTICE'
-                exclude 'META-INF/LICENSE'
-                exclude 'META-INF/LICENSE.txt'
-                exclude 'META-INF/NOTICE.txt'
-                exclude 'META-INF/ASL2.0'
-            }
-        }
-        dependencies {
-            compile fileTree(dir: 'libs', include: ['*.jar'])
-            compile project(':hodclient')
-            //compile project(':hodresponseparser')
-        }
-
-6. If you want to use the HODResponseParser library, follow step 3 and 4 to select also the HODResponseParser module and uncomment the "compile project(':hodresponseparser')" line from the dependencies block above.
+## Integrate HavenOnDemand into an Android project
+Open your app build.gradle and add the dependency as follows:
+    dependencies {
+        // add hodclient and hodresponseparser dependencies
+        compile 'com.havenondemand:hodclient:2.0'
+        compile 'com.havenondemand:hodresponseparser:2.0'
+    }
 
 ----
 ## HODClient API References
