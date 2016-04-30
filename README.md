@@ -1,4 +1,4 @@
-# HavenOndemand Library for Android. V2.0
+# HavenOndemand Library for Android. V2.1
 
 ----
 ## Overview
@@ -18,8 +18,8 @@ Open your app build.gradle and add the dependency as follows:
 
     dependencies {
         // add hodclient and hodresponseparser dependencies
-        compile 'com.havenondemand:hodclient:2.0'
-        compile 'com.havenondemand:hodresponseparser:2.0'
+        compile 'com.havenondemand:hodclient:2.1'
+        compile 'com.havenondemand:hodresponseparser:2.1'
     }
 
 ----

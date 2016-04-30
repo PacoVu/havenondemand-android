@@ -1,5 +1,27 @@
 apply plugin: 'com.android.library'
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'hodresponseparser'
 
+    publishedGroupId = 'com.havenondemand'
+    libraryName = 'hodresponseparser'
+    artifact = 'hodresponseparser'
+
+    libraryDescription = 'A parser library for parsing HavenOnDemand APIs\' response on Android'
+
+    siteUrl = 'https://www.havenondemand.com'
+    gitUrl = ''
+
+    libraryVersion = '2.0'
+
+    developerId = 'PV'
+    developerName = 'Phong Vu'
+    developerEmail = 'phong.vu@hpe.com'
+
+    licenseName = 'MIT license'
+    licenseUrl = ''
+    allLicenses = ["MIT"]
+}
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -7,8 +29,8 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "2.1"
     }
     buildTypes {
         release {
@@ -20,6 +42,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.1'
     compile files('libs/gson-1.7.1.jar')
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

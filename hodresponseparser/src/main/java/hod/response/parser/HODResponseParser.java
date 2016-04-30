@@ -495,6 +495,22 @@ public class HODResponseParser {
         }
         return obj;
     }
+    public AnomalyDetectionResponse ParseAnomalyDetectionResponse(String jsonStr) {
+        AnomalyDetectionResponse obj = null;
+        String result = getResult(jsonStr);
+        if (result != null) {
+            obj = gsonObj.fromJson(result, AnomalyDetectionResponse.class);
+        }
+        return obj;
+    }
+    public TrendAnalysisResponse ParseTrendAnalysisResponse(String jsonStr) {
+        TrendAnalysisResponse obj = null;
+        String result = getResult(jsonStr);
+        if (result != null) {
+            obj = gsonObj.fromJson(result, TrendAnalysisResponse.class);
+        }
+        return obj;
+    }
     public Object ParseCustomResponse(Class<?> T, String jsonStr)
     {
         Object obj = null;

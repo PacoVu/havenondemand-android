@@ -25,6 +25,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -209,7 +210,9 @@ public class HODClient {
                                 }
                             } else {
                                 for (String m : (ArrayList<String>) val) {
-                                    reqEntity.addPart(key, new StringBody(m, ContentType.TEXT_PLAIN));
+                                    ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+                                    StringBody value = new StringBody(m.toString(), contentType);
+                                    reqEntity.addPart(key, value);
                                 }
                             }
                         } else {
@@ -228,7 +231,9 @@ public class HODClient {
                                     return "Failed. File not found";
                                 }
                             } else {
-                                reqEntity.addPart(key, new StringBody((String)val, ContentType.TEXT_PLAIN));
+                                ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+                                StringBody value = new StringBody(val.toString(), contentType);
+                                reqEntity.addPart(key, value);
                             }
                         }
                     }
@@ -267,7 +272,6 @@ public class HODClient {
                 isError = true;
                 return  e.getMessage();
             }
-
             //return null;
         }
 

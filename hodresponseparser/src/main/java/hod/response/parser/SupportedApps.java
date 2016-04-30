@@ -1,9 +1,9 @@
-package hod.api.hodclient;
+package hod.response.parser;
 
 /**
- * Created by vuv on 10/10/2015.
+ * Created by vanphongvu on 1/5/16.
  */
-public class HODApps {
+public class SupportedApps {
     public final static String RECOGNIZE_SPEECH = "recognizespeech";
 
     public final static String CANCEL_CONNECTOR_SCHEDULE = "cancelconnectorschedule";
@@ -11,14 +11,15 @@ public class HODApps {
     public final static String CONNECTOR_STATUS = "connectorstatus";
     public final static String CREATE_CONNECTOR = "createconnector";
     public final static String DELETE_CONNECTOR = "deleteconnector";
-    public final static String RETRIEVE_CONFIG = "retrieveconfig";
+    public final static String RETRIEVE_CONFIG_ATTR = "retrieveconfig_attr";
+    public final static String RETRIEVE_CONFIG_FILE = "retrieveconfig_file";
     public final static String START_CONNECTOR = "startconnector";
     public final static String STOP_CONNECTOR = "stopconnector";
     public final static String UPDATE_CONNECTOR = "updateconnector";
 
     public final static String EXPAND_CONTAINER = "expandcontainer";
     public final static String STORE_OBJECT = "storeobject";
-    public final static String EXTRACT_TEXT = "extracttext";
+    //public final static String EXTRACT_TEXT = "extracttext";
     public final static String VIEW_DOCUMENT = "viewdocument";
 
     public final static String OCR_DOCUMENT = "ocrdocument";
@@ -34,9 +35,7 @@ public class HODApps {
     public final static String SUGGEST_LINKS = "suggestlinks";
     public final static String SUMMARIZE_GRAPH = "summarizegraph";
 
-    public final static String ANOMALY_DETECTION = "anomalydetection";
-    public final static String TREND_ANALYSIS = "trendanalysis";
-
+    /*
     public final static String CREATE_CLASSIFICATION_OBJECTS = "createclassificationobjects";
     public final static String CREATE_POLICY_OBJECTS = "createpolicyobjects";
     public final static String DELETE_CLASSIFICATION_OBJECTS = "deleteclassificationobjects";
@@ -45,6 +44,7 @@ public class HODApps {
     public final static String RETRIEVE_POLICY_OBJECTS = "retrievepolicyobjects";
     public final static String UPDATE_CLASSIFICATION_OBJECTS = "updateclassificationobjects";
     public final static String UPDATE_POLICY_OBJECTS = "updatepolicyobjects";
+    */
 
     public final static String PREDICT = "predict";
     public final static String RECOMMEND = "recommend";
@@ -56,17 +56,19 @@ public class HODApps {
     public final static String UPDATE_QUERY_PROFILE = "updatequeryprofile";
 
     public final static String FIND_RELATED_CONCEPTS = "findrelatedconcepts";
+    /*
     public final static String FIND_SIMILAR = "findsimilar";
     public final static String GET_CONTENT = "getcontent";
     public final static String GET_PARAMETRIC_VALUES = "getparametricvalues";
     public final static String QUERY_TEXT_INDEX = "querytextindex";
     public final static String RETRIEVE_INDEX_FIELDS = "retrieveindexfields";
+    */
 
     public final static String AUTO_COMPLETE = "autocomplete";
-    public final static String CLASSIFY_DOCUMENT = "classifydocument";
+    //public final static String CLASSIFY_DOCUMENT = "classifydocument";
     public final static String EXTRACT_CONCEPTS = "extractconcepts";
-    public final static String CATEGORIZE_DOCUMENT = "categorizedocument";
-    public final static String ENTITY_EXTRACTION = "extractentities";
+    //public final static String CATEGORIZE_DOCUMENT = "categorizedocument";
+    //public final static String ENTITY_EXTRACTION = "extractentities";
     public final static String EXPAND_TERMS = "expandterms";
     public final static String HIGHLIGHT_TEXT = "highlighttext";
     public final static String IDENTIFY_LANGUAGE = "identifylanguage";
@@ -81,4 +83,5 @@ public class HODApps {
     //public final static String LIST_INDEXES = "listindexes"; REMOVED
     public final static String LIST_RESOURCES = "listresources";
     public final static String RESTORE_TEXT_INDEX = "restoretextindex";
+
 }
