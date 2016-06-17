@@ -68,7 +68,6 @@ public class HODResponseParser {
             JSONObject actions = null;
             if (!mainObject.isNull("actions")) {
                 actions = mainObject.getJSONArray("actions").getJSONObject(0);
-                //String action = actions.getString("action");
                 String status = actions.getString("status");
                 if (status.equals("finished"))
                     result = actions.getJSONObject("result").toString();
@@ -89,21 +88,21 @@ public class HODResponseParser {
                     HODErrorObject error = new HODErrorObject();
                     error.error = HODErrorCode.QUEUED;
                     error.reason = "Task is in queue.";
-                    error.jobID = actions.getString("jobID");
+                    error.jobID = mainObject.getString("jobID");
                     this.AddError(error);
                     return null;
                 } else if (status.equals("in progress")) {
                     HODErrorObject error = new HODErrorObject();
                     error.error = HODErrorCode.IN_PROGRESS;
                     error.reason = "Task is in progress.";
-                    error.jobID = actions.getString("jobID");
+                    error.jobID = mainObject.getString("jobID");
                     this.AddError(error);
                     return null;
                 } else {
                     HODErrorObject error = new HODErrorObject();
                     error.error = HODErrorCode.UNKNOWN_ERROR;
                     error.reason = "Unknown error";
-                    error.jobID = actions.getString("jobID");
+                    error.jobID = mainObject.getString("jobID");
                     this.AddError(error);
                     return null;
                 }
